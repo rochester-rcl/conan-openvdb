@@ -73,6 +73,7 @@ class OpenVDBConan(ConanFile):
              "BLOSC_ROOT": self.deps_cpp_info["Blosc"].rootpath,
              "ILMBASE_ROOT": self.deps_cpp_info["IlmBase"].rootpath,
              "OPENEXR_ROOT": self.deps_cpp_info["OpenEXR"].rootpath,
+             "GLFW3_ROOT": self.deps_cpp_info["glfw"].rootpath,
              })
 
         cmake = CMake(self)
@@ -87,6 +88,8 @@ class OpenVDBConan(ConanFile):
              "OPENVDB_ENABLE_3_ABI_COMPATIBLE": True,
              "ILMBASE_NAMESPACE_VERSIONING": False,
              "OPENEXR_NAMESPACE_VERSIONING": False,
+             "USE_GLFW3": True,
+             "GLFW3_USE_STATIC_LIBS": True,
              "CMAKE_INSTALL_PREFIX": self.package_folder
              })
 
