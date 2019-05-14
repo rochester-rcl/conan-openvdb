@@ -13,7 +13,6 @@ class OpenVDBConan(ConanFile):
                 "TBB/2018_U6@conan/stable",
                 "Blosc/1.5.0@jromphf/stable",
                 "zlib/1.2.11@conan/stable",
-                "IlmBase/2.3.0@jromphf/stable",
                 "OpenEXR/2.3.0@jromphf/stable",
                 )
     boost_components_needed = "iostreams", "system", "thread"
@@ -21,7 +20,7 @@ class OpenVDBConan(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = "shared=False", "fPIC=False", "Boost:fPIC=True"
-    exports = ["CMakeLists.txt"]
+    exports = ["CMakeLists.txt", "FindILMBase.cmake"]
     build_policy = "missing"
 
     def config_options(self):
@@ -64,30 +63,32 @@ class OpenVDBConan(ConanFile):
                               "conan_basic_setup()\n" +
                               "ADD_DEFINITIONS(-std=c++11)")
         # Dont build vdb_view to avoid GLFW error
-        shutil.copy("CMakeLists.txt", "{}/openvdb-{}/openvdb/CMakeLists.txt".format(self.source_folder, self.version))
+        shutil.copy("CMakeLists.txt".format(self.source_folder), "{}/openvdb-{}/openvdb/CMakeLists.txt".format(self.source_folder, self.version))
+        shutil.copy("FindILMBase.cmake".format(self.source_folder), "{}/openvdb-{}/cmake/FindILMBase.cmake".format(self.source_folder, self.version))
 
     def build(self):
         os.environ.update(
             {"BOOST_ROOT": self.deps_cpp_info["boost"].rootpath,
              "TBB_ROOT": self.deps_cpp_info["TBB"].rootpath,
              "BLOSC_ROOT": self.deps_cpp_info["Blosc"].rootpath,
-             "ILMBASE_ROOT": self.deps_cpp_info["IlmBase"].rootpath,
+             "ILMBASE_ROOT": self.deps_cpp_info["OpenEXR"].rootpath,
              "OPENEXR_ROOT": self.deps_cpp_info["OpenEXR"].rootpath,
+             "GLFW3_ROOT": self.deps_cpp_info["glfw"].rootpath
              })
 
         cmake = CMake(self)
 
         cmake.definitions.update(
             {"BUILD_SHARED": self.options.shared,
-             "BUILD_TOOLS": False,
              "OPENVDB_BUILD_CORE": True,
-             "OPENVDB_BUILD_BINARIES": False,
              "OPENVDB_BUILD_UNITTESTS": False,
              "OPENVDB_BUILD_PYTHON_MODULE": False,
              "OPENVDB_ENABLE_3_ABI_COMPATIBLE": True,
-             "ILMBASE_NAMESPACE_VERSIONING": False,
-             "OPENEXR_NAMESPACE_VERSIONING": False,
-             "CMAKE_INSTALL_PREFIX": self.package_folder
+             "ILMBASE_NAMESPACE_VERSIONING": True,
+             "OPENEXR_NAMESPACE_VERSIONING": True,
+             "CMAKE_INSTALL_PREFIX": self.package_folder,
+             "USE_GLFW3": True,
+             "GLFW3_USE_STATIC_LIBS": True
              })
 
         if "fPIC" in self.options.fields:
