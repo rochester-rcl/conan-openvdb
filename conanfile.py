@@ -5,7 +5,7 @@ from conans import ConanFile, CMake, tools
 
 class OpenVDBConan(ConanFile):
     name = "OpenVDB"
-    version = "6.0.0"
+    version = "7.0.0"
     license = "MPL-2.0"
     description = "OpenVDB is an open source C++ library comprising a novel hierarchical data structure and a large suite of tools for the efficient storage and manipulation of sparse volumetric data discretized on three-dimensional grids."
     requires = ("boost/1.67.0@conan/stable",
@@ -13,8 +13,8 @@ class OpenVDBConan(ConanFile):
                 "TBB/2018_U6@conan/stable",
                 "Blosc/1.5.0@jromphf/stable",
                 "zlib/1.2.11@conan/stable",
-                "IlmBase/2.3.0@jromphf/stable",
-                "OpenEXR/2.3.0@jromphf/stable",
+                "IlmBase/2.4.0@jromphf/stable",
+                "OpenEXR/2.4.0@jromphf/stable",
                 )
     boost_components_needed = "iostreams", "system", "thread"
     generators = "cmake"
@@ -58,14 +58,14 @@ class OpenVDBConan(ConanFile):
         os.unlink('openvdb.tar.gz')
 
         tools.replace_in_file("{}/openvdb-{}/CMakeLists.txt".format(self.source_folder, self.version),
-                              "PROJECT ( OpenVDB )",
-                              "PROJECT ( OpenVDB )\n" +
+                              "project(OpenVDB)",
+                              "project(OpenVDB)\n" +
                               "include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)\n" +
                               "conan_basic_setup()\n" +
                               "ADD_DEFINITIONS(-std=c++11)")
         # Dont build vdb_view to avoid GLFW error
-        shutil.copy("CMakeLists.txt".format(self.source_folder), "{}/openvdb-{}/openvdb/CMakeLists.txt".format(self.source_folder, self.version))
-        shutil.copy("FindILMBase.cmake".format(self.source_folder), "{}/openvdb-{}/cmake/FindILMBase.cmake".format(self.source_folder, self.version))
+        # shutil.copy("../CMakeLists.txt", "{}/openvdb-{}/openvdb/CMakeLists.txt".format(self.source_folder, self.version))
+        # shutil.copy("../FindIlmBase.cmake", "{}/openvdb-{}/cmake/FindIlmBase.cmake".format(self.source_folder, self.version))
 
     def build(self):
         os.environ.update(
@@ -86,7 +86,7 @@ class OpenVDBConan(ConanFile):
              "OPENVDB_BUILD_BINARIES": False,
              "OPENVDB_BUILD_UNITTESTS": False,
              "OPENVDB_BUILD_PYTHON_MODULE": False,
-             "OPENVDB_ENABLE_3_ABI_COMPATIBLE": True,
+             # "OPENVDB_ENABLE_3_ABI_COMPATIBLE": True,
              "ILMBASE_NAMESPACE_VERSIONING": True,
              "OPENEXR_NAMESPACE_VERSIONING": True,
              "CMAKE_INSTALL_PREFIX": self.package_folder,
