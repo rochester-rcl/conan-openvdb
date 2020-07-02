@@ -19,6 +19,7 @@ class OpenVDBConan(ConanFile):
         "IlmBase/2.4.0@rcldsl/stable",
         "OpenEXR/2.4.0@rcldsl/stable",
     )
+    url = "https://github.com/rochester-rcl/conan-openvdb"
     boost_components_needed = "iostreams", "system", "thread"
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
