@@ -2,9 +2,9 @@ project(PackageTest)
 cmake_minimum_required(VERSION 2.8.12)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+conan_basic_setup(TARGETS)
 
 add_definitions(-std=c++11)
 
 add_executable(testPackage main.cpp)
-target_link_libraries(testPackage ${CONAN_LIBS})
+target_link_libraries(testPackage CONAN_PKG::OpenVDB)
