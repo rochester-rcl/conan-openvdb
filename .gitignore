@@ -1,2 +1,7 @@
-*/build/*
+/build/*
 *.idea
+*.vscode
+
+*build*
+*src*
+test_package/build*

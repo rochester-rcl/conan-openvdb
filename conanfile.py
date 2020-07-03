@@ -133,7 +133,8 @@ class OpenVDBConan(ConanFile):
             }
         )
         # fix tbb install name on osx
-        self.change_tbb_rpath()
+        if self.settings.os == "Macos":
+            self.change_tbb_rpath()
 
         if "fPIC" in self.options.fields:
             cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = self.options.fPIC
