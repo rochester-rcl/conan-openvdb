@@ -124,6 +124,7 @@ class OpenVDBConan(ConanFile):
                 "OPENVDB_BUILD_PYTHON_MODULE": False,
                 "OPENVDB_ENABLE_RPATH": False,
                 "ILMBASE_LOCATION": self.deps_cpp_info["IlmBase"].rootpath,
+		"OPENVDB_CXX_STRICT": False,
                 # "OPENVDB_ENABLE_3_ABI_COMPATIBLE": True,
                 "ILMBASE_NAMESPACE_VERSIONING": True,
                 "OPENEXR_NAMESPACE_VERSIONING": True,
