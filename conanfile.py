@@ -15,7 +15,7 @@ class OpenVDBConan(ConanFile):
         "glfw/3.3@bincrafters/stable",
         "tbb/2020.1",
         "Blosc/1.5.0@rcldsl/stable",
-        "zlib/1.2.11@conan/stable",
+        "zlib/1.2.8@conan/stable",
         "IlmBase/2.4.0@rcldsl/stable",
         "OpenEXR/2.4.0@rcldsl/stable",
     )
